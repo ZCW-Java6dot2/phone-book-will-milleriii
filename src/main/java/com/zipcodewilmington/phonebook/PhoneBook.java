@@ -1,11 +1,8 @@
 package com.zipcodewilmington.phonebook;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 //import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+
 
 /**
  * Created by leon on 1/23/18.
@@ -13,42 +10,61 @@ import java.util.Map;
  */
 public class PhoneBook {
 
-    private final Map<String, List<String>> phonebook;
+    private Map<String, List<String>> phonebook;
 
     public PhoneBook(Map<String, List<String>> map) {
-        this.phonebook = null;
+
+        this.phonebook = map;
     }
 
     public PhoneBook() {
-        this(null);
+
+        phonebook = new LinkedHashMap<>();
     }
 
     public void add(String name, String phoneNumber) {
+        // .singletonList was mentioned during ALumni session and I googled an ex. of it for this case
+        // saw multiple examples of it being used for phone # problems but not 100% confident in how it works
+        phonebook.put(name, new ArrayList<>(Collections.singletonList(phoneNumber)));
+
     }
 
     public void addAll(String name, String... phoneNumbers) {
+        phonebook.put(name, new ArrayList<>(Arrays.asList(phoneNumbers)));
     }
 
     public void remove(String name) {
+        phonebook.remove(name);
     }
 
     public Boolean hasEntry(String name) {
-        return null;
+        for (HashMap.Entry<String, List<String>> entry : phonebook.entrySet()) {
+            if (entry.getValue().contains(name)){
+                return true;
+            }
+        }
+
+        return phonebook.containsKey(name);
     }
 
     public List<String> lookup(String name) {
-        return null;
+        return phonebook.get(name);
     }
 
     public String reverseLookup(String phoneNumber)  {
+        for (HashMap.Entry<String, List<String>> entry : phonebook.entrySet()) {
+            if (entry.getValue().contains(phoneNumber)){
+                return entry.getKey();
+            }
+        }
         return null;
     }
 
     public List<String> getAllContactNames() {
-        return null;
+        return new ArrayList<>(phonebook.keySet());
     }
 
     public Map<String, List<String>> getMap() {
-        return null;
+        return phonebook;
     }
 }
